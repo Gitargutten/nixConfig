@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../../modules/common/programs.nix
     ../../modules/common/starship.nix
   ];
 
