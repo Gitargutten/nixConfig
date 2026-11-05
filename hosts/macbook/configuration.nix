@@ -10,6 +10,8 @@
   environment.systemPackages = [
     pkgs.vim
     pkgs.macpm
+    pkgs.tigervnc
+    pkgs.moonlight
   ];
 
   nix.settings.experimental-features = "nix-command flakes";
