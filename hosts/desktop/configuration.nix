@@ -71,10 +71,23 @@
     settings.PermitRootLogin = "yes";
   };
 
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    pulse.enable = true;
+  };
+
   services.sunshine = {
     enable = true;
+    # Will start from inside Niri.
+    autostart = false;
     openFirewall = true;
     capSysAdmin = true;
+    settings = {
+      encoder = "software";
+      capture = "kms";
+      adapter_name = "/dev/dri/renderD128";
+    };
   };
 
   networking = {
