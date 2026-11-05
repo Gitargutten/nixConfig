@@ -16,13 +16,14 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   programs.zsh.enable = true;
+  programs.niri.enable = true;
 
   hardware.graphics = {
     enable = lib.mkForce true;
     enable32Bit = lib.mkForce true;
     extraPackages = with pkgs; [
-        mesa
-        libglvnd
+      mesa
+      libglvnd
     ];
   };
 
@@ -35,16 +36,16 @@
     settings = {
       default_session = {
         command = "${pkgs.writeShellScript "start-niri-lxc" ''
-        export XDG_RUNTIME_DIR=/run/user/$(id -u)
-        export LIBSEAT_BACKEND=seatd
-        export GBM_BACKENDS_PATH="${pkgs.mesa}/lib/gbm:/run/opengl-driver/lib/gbm"
-        export LIBGL_DRIVERS_PATH="${pkgs.mesa}/lib/dri:/run/opengl-driver/lib/dri"
-        export __EGL_VENDOR_LIBRARY_DIRS="${pkgs.mesa}/share/glvnd/egl_vendor.d:/run/opengl-driver/share/glvnd/egl_vendor.d"
-        export MESA_LOADER_DRIVER_OVERRIDE=nouveau
-        export GALLIUM_DRIVER=nouveau
-        export RUST_LOG="niri=debug,smithay=debug"
-        exec ${pkgs.dbus}/bin/dbus-run-session ${pkgs.niri}/bin/niri --session > /tmp/niri.log 2>&1
-      ''}";
+          export XDG_RUNTIME_DIR=/run/user/$(id -u)
+          export LIBSEAT_BACKEND=seatd
+          export GBM_BACKENDS_PATH="${pkgs.mesa}/lib/gbm:/run/opengl-driver/lib/gbm"
+          export LIBGL_DRIVERS_PATH="${pkgs.mesa}/lib/dri:/run/opengl-driver/lib/dri"
+          export __EGL_VENDOR_LIBRARY_DIRS="${pkgs.mesa}/share/glvnd/egl_vendor.d:/run/opengl-driver/share/glvnd/egl_vendor.d"
+          export MESA_LOADER_DRIVER_OVERRIDE=nouveau
+          export GALLIUM_DRIVER=nouveau
+          export RUST_LOG="niri=debug,smithay=debug"
+          exec ${pkgs.dbus}/bin/dbus-run-session ${pkgs.niri}/bin/niri --session > /tmp/niri.log 2>&1
+        ''}";
         user = "andreas";
       };
     };
@@ -62,7 +63,9 @@
     description = "Dev account";
     extraGroups = [ "wheel" "video" "audio" "seat" "input" "render" "networkmanager" ];
     shell = pkgs.zsh;
-    openssh.authorizedKeys.keys = [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCjcUkwnShwD8b/5JV/CfXNNtkcTnjRvIM/KpNM3U+CXzuynzOPFR2ZpsYh7ZhLeZLiMbplOYiZaGzcqmeuNjVy3W8JM4yuvom/Qi2ImgRtTZH8Ylr8Fbe/DciGmi0E0kfIJx7PsI1bn2uadt6KbyOTyiSUW0Uiqjdqlv64mvWJBgQg/MsP53vLt+Z+RgHuHyS4wzEdhcx3WC19NJM/ZJwcL1Z6IF63qnyPStOCFwEHhn2CJ0gnX22eicwIQRI2Df7mti6Zkng6ftOnxTNTsQL+Yhe+WZg1hHNMkbukSFuLC1H4/TEs/eC2m6MYs8ATUibHc+1lLaQAIIZGyHjcxAofl585aID+ZF5qdIxtClbulh6l+N/j75AGFhhbsUvnyKGz8NL1VtR5dBlqbn8ENJc9Bca++mDxZV9lpqYzLp8Rt+J0/jG+/P2bQtTIYkU2XSl0Pcl+DVspUqaTL+r/f8KR4dF7MnMBCqfWPAdO7h+UgTv67rr7u3Whgc3SYMjpb63lUPmh+ImW96TZQOBI08ZExp42Zd3zWHiT+5PP40x30L8rPaVpiZvypZcpgcYPoSEFVBLn8WKyVlg+zHdo3IZr5YfXr4j1A6O98OKEIja7ug0bCFQOmeOFwmqxC4lhf4Tj3CRGrOI8oap3vGC8ffO6IwxaatBeYkfMy4eyLXRcGQ== andreas.fosshaug@gmail.com" ];
+    openssh.authorizedKeys.keys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCjcUkwnShwD8b/5JV/CfXNNtkcTnjRvIM/KpNM3U+CXzuynzOPFR2ZpsYh7ZhLeZLiMbplOYiZaGzcqmeuNjVy3W8JM4yuvom/Qi2ImgRtTZH8Ylr8Fbe/DciGmi0E0kfIJx7PsI1bn2uadt6KbyOTyiSUW0Uiqjdqlv64mvWJBgQg/MsP53vLt+Z+RgHuHyS4wzEdhcx3WC19NJM/ZJwcL1Z6IF63qnyPStOCFwEHhn2CJ0gnX22eicwIQRI2Df7mti6Zkng6ftOnxTNTsQL+Yhe+WZg1hHNMkbukSFuLC1H4/TEs/eC2m6MYs8ATUibHc+1lLaQAIIZGyHjcxAofl585aID+ZF5qdIxtClbulh6l+N/j75AGFhhbsUvnyKGz8NL1VtR5dBlqbn8ENJc9Bca++mDxZV9lpqYzLp8Rt+J0/jG+/P2bQtTIYkU2XSl0Pcl+DVspUqaTL+r/f8KR4dF7MnMBCqfWPAdO7h+UgTv67rr7u3Whgc3SYMjpb63lUPmh+ImW96TZQOBI08ZExp42Zd3zWHiT+5PP40x30L8rPaVpiZvypZcpgcYPoSEFVBLn8WKyVlg+zHdo3IZr5YfXr4j1A6O98OKEIja7ug0bCFQOmeOFwmqxC4lhf4Tj3CRGrOI8oap3vGC8ffO6IwxaatBeYkfMy4eyLXRcGQ== andreas.fosshaug@gmail.com"
+    ];
   };
 
   services.openssh = {
@@ -78,15 +81,12 @@
 
   services.sunshine = {
     enable = true;
-    # Will start from inside Niri.
-    autostart = false;
+    autoStart = false;
     openFirewall = true;
     capSysAdmin = true;
     settings = {
-      csrf_allowed_origins = "https://192.168.68.30:47990";
       encoder = "software";
       capture = "kms";
-      adapter_name = "/dev/dri/renderD128";
     };
   };
 
@@ -112,6 +112,8 @@
     alacritty
     fuzzel
     xwayland-satellite
+    pipewire
+    wireplumber
     inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
