@@ -15,6 +15,11 @@
     enable = true;
   };
 
+  xdg.configFile."sunshine/sunshine.conf".text = ''
+    capture = kms
+    encoder = software
+  '';
+
   xdg.configFile."niri/config.kdl".text = ''
     spawn-at-startup "noctalia"
     spawn-at-startup "pipewire"
@@ -22,7 +27,7 @@
     spawn-at-startup "wireplumber"
     spawn-at-startup "/run/wrappers/bin/sunshine"
 
-    inputs {
+    input {
       keyboard {
         xkb {
           layout "no"

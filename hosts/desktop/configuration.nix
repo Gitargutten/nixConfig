@@ -120,6 +120,8 @@
     "d /tmp/.X11-unix 1777 root root -"
   ];
 
+  systemd.user.services.sunshine.enable = false;
+
   programs.nix-ld.enable = true;
   system.stateVersion = "26.05";
 }
