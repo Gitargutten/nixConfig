@@ -27,6 +27,7 @@
     ];
   };
 
+  services.udev.enable = lib.mkForce false;
   services.seatd.enable = true;
   services.dbus.enable = true;
   security.polkit.enable = true;
@@ -44,6 +45,7 @@
           export MESA_LOADER_DRIVER_OVERRIDE=nouveau
           export GALLIUM_DRIVER=nouveau
           export RUST_LOG="niri=debug,smithay=debug"
+	  /run/wrappers/bin/sunshine &
           exec ${pkgs.dbus}/bin/dbus-run-session ${pkgs.niri}/bin/niri --session > /tmp/niri.log 2>&1
         ''}";
         user = "andreas";
@@ -86,7 +88,7 @@
     capSysAdmin = true;
     settings = {
       encoder = "software";
-      capture = "kms";
+      capture = "wlr";
     };
   };
 
@@ -117,13 +119,22 @@
     inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
-  systemd.tmpfiles.rules = [
-    "d /run/user/1000 0700 andreas users -"
-    "d /tmp/.X11-unix 1777 root root -"
-    "L+ /run/opengl-driver - - - - ${pkgs.mesa}"
-  ];
+  systemd = {
+    tmpfiles.rules = [
+      "d /run/user/1000 0700 andreas users -"
+      "d /tmp/.X11-unix 1777 root root -"
+      "L+ /run/opengl-driver - - - - ${pkgs.mesa}"
+      "L+ /run/udev - - - - /mnt/host-udev"
+    ];
+    user.services.sunshine.enable = false;
 
-  systemd.user.services.sunshine.enable = false;
+    services.systemd-udevd.enable = false;
+    sockets = {
+      systemd-udevd-control.enable = false;
+      systemd-udevd-kernel.enable = false;
+    };
+  };
+
 
   programs.nix-ld.enable = true;
   system.stateVersion = "26.05";
