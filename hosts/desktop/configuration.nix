@@ -120,6 +120,7 @@
   systemd.tmpfiles.rules = [
     "d /run/user/1000 0700 andreas users -"
     "d /tmp/.X11-unix 1777 root root -"
+    "L+ /run/opengl-driver - - - - ${pkgs.mesa}"
   ];
 
   systemd.user.services.sunshine.enable = false;

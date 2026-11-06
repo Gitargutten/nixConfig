@@ -4,6 +4,8 @@
   imports = [
     ../../modules/common/programs.nix
     ../../modules/common/starship.nix
+
+    ../../modules/macbook/programs.nix
   ];
 
   home = {

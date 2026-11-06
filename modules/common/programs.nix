@@ -14,7 +14,21 @@
     };
   };
 
+  programs.tmux = {
+    enable = true;
+    newSession = true;
+    keyMode = "vi";
+  };
+
   home.packages = with pkgs; [
     fzf
+    pkgs.neo-cowsay
+    pkgs.docker
+    pkgs.neovim
+    pkgs.nmap
+    pkgs.sl
+    pkgs.tldr
+    pkgs.tree
+    pkgs.wget
   ];
 }
