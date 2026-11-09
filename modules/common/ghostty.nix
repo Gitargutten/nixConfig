@@ -13,6 +13,9 @@
 
       macos-option-as-alt = true;
       window-decoration = false;
+
+      window-padding-x = 16;
+      window-padding-balance = true;
     };
   };
 

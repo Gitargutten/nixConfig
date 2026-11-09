@@ -107,7 +107,7 @@
   networking = {
     useDHCP = false;
     defaultGateway = { address = "192.168.68.1"; interface = "eth0"; };
-    nameservers = [ "192.168.68.1" "1.1.1.1" ];
+    nameservers = [ "192.168.68.12" "1.1.1.1" ];
     interfaces.eth0.ipv4.addresses = [{
       address = "192.168.68.30";
       prefixLength = 22;
@@ -130,6 +130,9 @@
     pipewire
     wireplumber
     inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
+
+    pkgs.nix-search-tv
+    pkgs.fzf
   ];
 
   systemd = {
