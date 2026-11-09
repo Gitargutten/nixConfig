@@ -3,8 +3,20 @@
 {
   imports = [
     (modulesPath + "/virtualisation/proxmox-lxc.nix")
+    ../../modules/common/fonts.nix
   ];
 
+  fonts = {
+    enableDefaultPackages = true;
+    fontDir.enable = true;
+    fontconfig = {
+      enable = true;
+      defaultFonts = {
+        monospace = [ "FiraCode Nerd Font" "Noto Color Emoji"];
+        sansSerif = [ "Noto Sans" "Symbols Nerd Font"];
+      };
+    };
+  };
   services.avahi.enable = false;
 
   environment.variables = {
@@ -108,6 +120,7 @@
     curl
     wget
     zed-editor
+
     mesa-demos
     git
     wayvnc
