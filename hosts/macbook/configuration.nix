@@ -69,6 +69,7 @@
       "xquartz"
       "zed"
       "zen"
+      "logi-options+"
     ];
     brews = [
 
