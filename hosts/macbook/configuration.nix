@@ -1,13 +1,13 @@
-{ pkgs, self, ...}:
+{ pkgs, self, username, ...}:
 
 {
 
-  system.primaryUser = "andreasfosshaug";
+  system.primaryUser = username;
   programs.zsh.enable = true;
 
   users.users.andreasfosshaug = {
-      name = "andreasfosshaug";
-      home = "/Users/andreasfosshaug";
+      name = username;
+      home = "/Users/${username}";
       shell = pkgs.zsh;
     };
 

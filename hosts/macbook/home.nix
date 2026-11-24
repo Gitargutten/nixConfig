@@ -1,4 +1,4 @@
-{ config, inputs, ...}:
+{ config, inputs, username, ...}:
 
 {
   age.identityPaths = [ "${config.home.homeDirectory}/.ssh/id_rsa"];
@@ -44,8 +44,8 @@
     };
 
   home = {
-    username = "andreasfosshaug";
-    homeDirectory = "/Users/andreasfosshaug";
+    username = username;
+    homeDirectory = "/Users/${username}";
     stateVersion = "24.05";
   };
 }

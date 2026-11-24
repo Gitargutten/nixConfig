@@ -38,22 +38,37 @@
     };
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, nixpkgs-darwin, home-manager, agenix, ... }: {
-    darwinConfigurations.macbook = nix-darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
-      specialArgs = { inherit self; };
-      modules = [
+  outputs = inputs@{ self, nix-darwin, nixpkgs, nixpkgs-darwin, home-manager, agenix, ... }:
+  let
+  makeDarwinHost = { hostname, username, system ? "aarch64-darwin", extraModules ? [] }:
+  nix-darwin.lib.darwinSystem {
+    inherit system;
+    specialArgs = { inherit self username; };
+    modules = [
         ./hosts/macbook/configuration.nix
+        { networking.hostName = hostname; }
         home-manager.darwinModules.home-manager {
-          environment.systemPackages = [ agenix.packages.aarch64-darwin.default ];
+          environment.systemPackages = [ agenix.packages.${system}.default ];
 
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = { inherit inputs; };
+          home-manager.extraSpecialArgs = { inherit inputs username; };
           home-manager.sharedModules = [ agenix.homeManagerModules.default ];
-          home-manager.users.andreasfosshaug = ./hosts/macbook/home.nix;
+          home-manager.users.${username} = ./hosts/macbook/home.nix;
         }
-      ];
+      ] ++ extraModules;
+    };
+  in {
+    darwinConfigurations = {
+      macbook = makeDarwinHost {
+        hostname = "macbook";
+        username = "andreasfosshaug";
+      };
+
+      macmini = makeDarwinHost {
+        hostname = "macmini";
+        username = "andreasmacmini";
+      };
     };
 
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
