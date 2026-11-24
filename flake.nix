@@ -28,19 +28,31 @@
         url = "github:KevenGoncalves/lig";
         inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix = {
+          url = "github:ryantm/agenix";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
+    paneru = {
+      url = "github:karinushka/paneru";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, nixpkgs-darwin, home-manager, ... }: {
+  outputs = inputs@{ self, nix-darwin, nixpkgs, nixpkgs-darwin, home-manager, agenix, ... }: {
     darwinConfigurations.macbook = nix-darwin.lib.darwinSystem {
       system = "aarch64-darwin";
       specialArgs = { inherit self; };
       modules = [
         ./hosts/macbook/configuration.nix
-        home-manager.darwinModules.home-manager
-        {
+        home-manager.darwinModules.home-manager {
+          environment.systemPackages = [ agenix.packages.aarch64-darwin.default ];
+
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.andreasfosshaug = ./hosts/macbook/home.nix;        }
+          home-manager.extraSpecialArgs = { inherit inputs; };
+          home-manager.sharedModules = [ agenix.homeManagerModules.default ];
+          home-manager.users.andreasfosshaug = ./hosts/macbook/home.nix;
+        }
       ];
     };
 
@@ -51,9 +63,11 @@
             ./hosts/desktop/configuration.nix
             home-manager.nixosModules.home-manager
             {
+              environment.systemPackages = [ agenix.packages.x86_64-linux.default ];
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = { inherit inputs; };
+              home-manager.sharedModules = [ agenix.homeManagerModules.default ];
               home-manager.users.andreas = ./hosts/desktop/home.nix;
             }
           ];

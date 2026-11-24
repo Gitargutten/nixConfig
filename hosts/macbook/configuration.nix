@@ -20,6 +20,14 @@
     enable = true;
     onActivation.cleanup = "zap";
 
+    taps = [
+      {
+        name = "ddalcu/mlx-serve";
+        clone_target = "https://github.com/ddalcu/mlx-serve";
+        trusted = true;
+      }
+    ];
+
     casks = [
       "emacs"
       "actual"
@@ -66,13 +74,16 @@
       "vorssaint"
       "webstorm"
       "wireshark-app"
+      "handbrake"
       "xquartz"
       "zed"
       "zen"
       "logi-options+"
+      "microsoft-outlook"
+      "mlx-serve"
+      "docker"
     ];
     brews = [
-
     ];
   };
 
@@ -80,6 +91,8 @@
     pkgs.vim
     pkgs.macpm
     pkgs.moonlight
+    pkgs.nixd
+    pkgs.nil
   ];
 
   nix.settings.experimental-features = "nix-command flakes";
